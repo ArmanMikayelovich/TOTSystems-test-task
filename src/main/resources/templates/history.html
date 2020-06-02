@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>history CRUD</title>
+</head>
+<body>
+<a th:href="@{page}" href="">Home</a>
+
+<div>
+    <h4> Create History</h4>
+    <form th:action="@{/histories}" method="post">
+        <br/>
+        <label> name
+            <input type="text" name="id" id="id">
+        </label>
+        <br/>
+        <label> BOARDID
+            <input type="text" name="BOARDID" id="BOARDID">
+        </label>
+
+        <br/>
+        <label> TRADEDATE
+            <input type="date" name="TRADEDATE" id="TRADEDATE">
+        </label>
+        <br/>
+        <label> SHORTNAME
+            <input type="text" name="SHORTNAME" id="SHORTNAME">
+        </label>
+        <br/>
+        <label> SECID
+            <input type="text" name="SECID" id="SECID">
+        </label>
+        <br/>
+        <label> NUMTRADES
+            <input type="number" name="NUMTRADES" id="NUMTRADES">
+        </label>
+        <br/>
+        <label> VALUE
+            <input type="number" name="VALUE" id="VALUE">
+        </label>
+        <br/>
+        <label> OPEN
+            <input type="number" name="OPEN" id="OPEN">
+        </label>
+        <br/>
+        <label> LOW
+            <input type="number" name="LOW" id="LOW">
+        </label>
+        <br/>
+        <label> HIGH
+            <input type="number" name="HIGH" id="HIGH">
+        </label>
+        <br/>
+        <label> LEGALCLOSEPRICE
+            <input type="number" name="LEGALCLOSEPRICE" id="LEGALCLOSEPRICE">
+        </label>
+        <br/>
+        <label> WAPRICE
+            <input type="number" name="WAPRICE" id="WAPRICE">
+        </label>
+        <br/>
+        <label> CLOSE
+            <input type="number" name="CLOSE" id="CLOSE">
+        </label>
+
+        <br/>
+        <label>VOLUME
+            <input type="number" name="VOLUME" id="VOLUME">
+        </label>
+        <br/>
+        <label> MARKETPRICE2
+            <input type="number" name="MARKETPRICE2" id="MARKETPRICE2">
+        </label>
+        <br/>
+        <label> MARKETPRICE3
+            <input type="number" name="MARKETPRICE3" id="MARKETPRICE3">
+        </label>
+        <br/>
+        <label> ADMITTEDQUOTE
+            <input type="number" name="ADMITTEDQUOTE" id="ADMITTEDQUOTE">
+        </label>
+        <br/>
+        <label> MP2VALTRD
+            <input type="number" name="MP2VALTRD" id="MP2VALTRD">
+        </label>
+        <br/>
+        <label> MARKETPRICE3TRADESVALUE
+            <input type="number" name="MARKETPRICE3TRADESVALUE" id="MARKETPRICE3TRADESVALUE">
+        </label>
+        <br/>
+        <label> ADMITTEDVALUE
+            <input type="number" name="ADMITTEDVALUE" id="ADMITTEDVALUE">
+        </label>
+        <br/>
+        <label> WAVAL
+            <input type="number" name="WAVAL" id="WAVAL">
+        </label>
+        <input type="submit" name="Create">
+    </form>
+</div>
+<div>
+    <h4> update History</h4>
+    <form id="updateForm">
+        <br/>
+        <label> name
+            <input type="text" name="id" id="idPut">
+        </label>
+        <br/>
+        <label> BOARDID
+            <input type="text" name="BOARDID" id="BOARDIDPut">
+        </label>
+
+        <br/>
+        <label> TRADEDATE
+            <input type="date" name="TRADEDATE" id="TRADEDATEPut">
+        </label>
+        <br/>
+        <label> SHORTNAME
+            <input type="text" name="SHORTNAME" id="SHORTNAMEPut">
+        </label>
+        <br/>
+        <label> SECID
+            <input type="text" name="SECID" id="SECIDPut">
+        </label>
+        <br/>
+        <label> NUMTRADES
+            <input type="number" name="NUMTRADES" id="NUMTRADESPut">
+        </label>
+        <br/>
+        <label> VALUE
+            <input type="number" name="VALUE" id="VALUEPut">
+        </label>
+        <br/>
+        <label> OPEN
+            <input type="number" name="OPEN" id="OPENPut">
+        </label>
+        <br/>
+        <label> LOW
+            <input type="number" name="LOW" id="LOWPut">
+        </label>
+        <br/>
+        <label> HIGH
+            <input type="number" name="HIGH" id="HIGHPut">
+        </label>
+        <br/>
+        <label> LEGALCLOSEPRICE
+            <input type="number" name="LEGALCLOSEPRICE" id="LEGALCLOSEPRICEPut">
+        </label>
+        <br/>
+        <label> WAPRICE
+            <input type="number" name="WAPRICE" id="WAPRICEPut">
+        </label>
+        <br/>
+        <label> CLOSE
+            <input type="number" name="CLOSE" id="CLOSEPut">
+        </label>
+
+        <br/>
+        <label>VOLUME
+            <input type="number" name="VOLUME" id="VOLUMEPut">
+        </label>
+        <br/>
+        <label> MARKETPRICE2
+            <input type="number" name="MARKETPRICE2" id="MARKETPRICE2Put">
+        </label>
+        <br/>
+        <label> MARKETPRICE3
+            <input type="number" name="MARKETPRICE3" id="MARKETPRICE3Put">
+        </label>
+        <br/>
+        <label> ADMITTEDQUOTE
+            <input type="number" name="ADMITTEDQUOTE" id="ADMITTEDQUOTEPut">
+        </label>
+        <br/>
+        <label> MP2VALTRD
+            <input type="number" name="MP2VALTRD" id="MP2VALTRDPut">
+        </label>
+        <br/>
+        <label> MARKETPRICE3TRADESVALUE
+            <input type="number" name="MARKETPRICE3TRADESVALUE" id="MARKETPRICE3TRADESVALUEPut">
+        </label>
+        <br/>
+        <label> ADMITTEDVALUE
+            <input type="number" name="ADMITTEDVALUE" id="ADMITTEDVALUEPut">
+        </label>
+        <br/>
+        <label> WAVAL
+            <input type="number" name="WAVAL" id="WAVALPut">
+        </label>
+    </form>
+    <button onclick="update()">Update</button>
+</div>
+
+<div>
+    <h4>Get by id</h4>
+    <input type="text" id="idForGet">
+    <button onclick="getById()">Get by id</button>
+    <div id="showHistory"></div>
+</div>
+<div>
+    <h4>Delete History</h4>
+    <input type="text" id="secidForDelete">
+    <button onclick="
+    deleteBySecid()">Get by Secid
+    </button>
+</div>
+<script>
+    function update() {
+        const security = {};
+        $("form#updateForm :input").each(function () {
+            security[this.name] = $(this).val();
+            console.log(this.name + '      ' + $(this).val());
+        });
+
+
+        $.ajax({
+            url: "http://localhost:8080/histories",
+            type: 'put',
+            data: JSON.stringify(security),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            dataType: 'json',
+            success: function () {
+                alert("History with secid " + security.secid + " updated.")
+            },
+            error: function (err) {
+                alert(JSON.stringify(err))
+            }
+        })
+    }
+
+    function getById() {
+        let value = $("#idForGet").val();
+        if (value === undefined || value === '') {
+            alert("empty id");
+        }
+        $.get("http://localhost:8080/histories/" + value, function (data, status) {
+            let html = '';
+            for (let key in data) {
+                html += `${key} : ${data[key]} <br/>`
+            }
+            $("#showHistory").html(html);
+        });
+    }
+
+    function deleteById() {
+        let value = $("#idForDelete").val();
+        if (value === undefined || value === '') {
+            alert("empty id");
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/histories/" + value,
+            type: 'delete',
+            success: function () {
+                alert("Deleted " + value);
+            },
+            error: function (err) {
+                alert(JSON.stringify(err))
+            }
+        })
+    }
+</script>
+</body>
+</html>

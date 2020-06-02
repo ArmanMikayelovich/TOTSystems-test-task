@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>Security CRUD</title>
+</head>
+<body>
+<a th:href="@{page}" href="">Home</a>
+
+<div>
+    <h4> Create Security</h4>
+    <form th:action="@{/securities}" method="post">
+        <br/>
+        <label> name
+            <input type="text" name="id" id="id">
+        </label>
+        <br/>
+        <label> secid
+            <input type="text" name="secid" id="secid">
+        </label>
+
+        <br/>
+        <label> name
+            <input type="text" name="shortname" id="shortname">
+        </label>
+        <br/>
+        <label> regnumber
+            <input type="text" name="regnumber" id="regnumber">
+        </label>
+        <br/>
+        <label> name
+            <input type="text" name="name" id="name">
+        </label>
+        <br/>
+        <label> isin
+            <input type="text" name="isin" id="isin">
+        </label>
+        <br/>
+        <label> is_traded
+            <input type="text" name="is_traded" id="is_traded">
+        </label>
+        <br/>
+        <label> emitent_id
+            <input type="text" name="emitent_id" id="emitent_id">
+        </label>
+        <br/>
+        <label> emitent_title
+            <input type="text" name="emitent_title" id="emitent_title">
+        </label>
+        <br/>
+        <label> emitent_inn
+            <input type="text" name="emitent_inn" id="emitent_inn">
+        </label>
+        <br/>
+        <label> emitent_okpo
+            <input type="text" name="emitent_okpo" id="emitent_okpo">
+        </label>
+        <br/>
+        <label> gosreg
+            <input type="text" name="gosreg" id="gosreg">
+        </label>
+        <br/>
+        <label> type
+            <input type="text" name="type" id="type">
+        </label>
+
+        <br/>
+        <label>group
+            <input type="text" name="group" id="group">
+        </label>
+        <br/>
+        <label> primary_boardid
+            <input type="text" name="primary_boardid" id="primary_boardid">
+        </label>
+        <br/>
+        <label> marketprice_boardid
+            <input type="text" name="marketprice_boardid" id="marketprice_boardid">
+        </label>
+                <input type="submit" name="Create">
+    </form>
+</div>
+<div>
+    <h4> update Security</h4>
+    <form id="updateForm">
+        <br/>
+        <label> name
+            <input type="text" name="id" id="idPut">
+        </label>
+        <br/>
+        <label> secid
+            <input type="text" name="secid" id="secidPut">
+        </label>
+
+        <br/>
+        <label> name
+            <input type="text" name="shortname" id="shortnamePut">
+        </label>
+        <br/>
+        <label> regnumber
+            <input type="text" name="regnumber" id="regnumberPut">
+        </label>
+        <br/>
+        <label> name
+            <input type="text" name="name" id="namePut">
+        </label>
+        <br/>
+        <label> isin
+            <input type="text" name="isin" id="isinPut">
+        </label>
+        <br/>
+        <label> is_traded
+            <input type="text" name="is_traded" id="is_tradedPut">
+        </label>
+        <br/>
+        <label> emitent_id
+            <input type="text" name="emitent_id" id="emitent_idPut">
+        </label>
+        <br/>
+        <label> emitent_title
+            <input type="text" name="emitent_title" id="emitent_titlePut">
+        </label>
+        <br/>
+        <label> emitent_inn
+            <input type="text" name="emitent_inn" id="emitent_innPut">
+        </label>
+        <br/>
+        <label> emitent_okpo
+            <input type="text" name="emitent_okpo" id="emitent_okpoPut">
+        </label>
+        <br/>
+        <label> gosreg
+            <input type="text" name="gosreg" id="gosregPut">
+        </label>
+        <br/>
+        <label> type
+            <input type="text" name="type" id="typePut">
+        </label>
+
+        <br/>
+        <label>group
+            <input type="text" name="group" id="groupPut">
+        </label>
+        <br/>
+        <label> primary_boardid
+            <input type="text" name="primary_boardid" id="primary_boardidPut">
+        </label>
+        <br/>
+        <label> marketprice_boardid
+            <input type="text" name="marketprice_boardid" id="marketprice_boardidPut">
+        </label>
+
+    </form>
+    <button onclick="update()">Update</button>
+</div>
+
+<div>
+    <h4>Get by secid</h4>
+    <input type="text" id="secidForGet">
+    <button onclick="
+    getBySecid()">Get by Secid</button>
+    <div id="showSecurity"></div>
+</div>
+<div>
+    <h4>Delete security</h4>
+    <input type="text" id="secidForDelete">
+    <button onclick="
+    deleteBySecid()">Get by Secid</button>
+</div>
+<script >
+    function update() {
+        const security = {};
+        $("form#updateForm :input").each(function(){
+            security[this.name] = $(this).val();
+            console.log(this.name + '      ' + $(this).val());
+        });
+
+
+        $.ajax({
+            url: "http://localhost:8080/securities",
+            type: 'put',
+            data: JSON.stringify(security),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            dataType: 'json',
+            success: function () {
+                alert("Security with secid " + security.secid + " updated.")
+            },
+            error:function (err) {
+            alert(JSON.stringify(err))
+            }
+        })
+    }
+    function getBySecid() {
+        let value = $("#secidForGet").val();
+        if (value === undefined || value === '') {
+            alert("empty secid");
+        }
+        $.get("http://localhost:8080/securities/" + value, function (data, status) {
+            let html='';
+            for (let key in data) {
+                html +=`${key} : ${data[key]} <br/>`
+            }
+            $("#showSecurity").html(html);
+        });
+    }
+    function deleteBySecid() {
+        let value = $("#secidForDelete").val();
+        if (value === undefined || value === '') {
+            alert("empty secid");
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/securities/" + value,
+            type: 'delete',
+            success: function () {
+                alert("Deleted " + value);
+            },
+            error:function (err) {
+                alert(JSON.stringify(err))
+            }
+        })
+    }
+</script>
+</body>
+</html>

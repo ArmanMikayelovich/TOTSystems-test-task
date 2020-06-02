@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TOT Systems test task</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+<a th:href="@{security-crud}" href="">Security CRUD</a>
+<a th:href="@{history-crud}" href="">History CRUD</a>
+<div>
+    <h2>Выберите XML файл для импорта Ценных бумаг</h2>
+    <br/>
+    <form th:action="@{/securities/import}" method="post" enctype='multipart/form-data'>
+        <input type="file" name="xmlFile" accept="text/xml"/>
+        <input type="submit" name="Submit" value="Send"/>
+    </form>
+</div>
+<br/>
+<div>
+    <h2>Выберите XML файл для импорта истории по бумагам</h2>
+    <br/>
+    <form th:action="@{/histories/import}" method="post" enctype='multipart/form-data'>
+        <input type="file" name="xmlFile" accept="text/xml"/>
+        <input type="submit" name="Submit" value="Send"/>
+    </form>
+</div>
+<br/>
+<div>
+    <div>
+        <div id="sort">
+            <label>need Sort
+                <input type="checkbox" id="needSort"/>
+            </label>
+            <label> Sort attribute
+                <input list="attributes" id="attributeName"/>
+                <datalist id="attributes">
+                    <option value="Trade date"></option>
+                    <option value="Emitent title"></option>
+                </datalist>
+            </label>
+
+            <label> Sort direction
+                <input list="directions" id="sortDirection"/>
+                <datalist id="directions">
+                    <option value="ASC"></option>
+                    <option value="DESC"></option>
+                </datalist>
+            </label>
+        </div>
+
+        <br/>
+
+        <div id="date">
+            <label>
+                Filter by Trade date
+                <input type="checkbox" id="needDateFilter"/>
+                <label> Start date
+                    <input type="date" id="startDate"/>
+                </label>
+                <label> End date
+                    <input type="date" id="endDate"/>
+                </label>
+            </label>
+        </div>
+
+        <div id="emitent">
+            <label>
+                Filter by Emitent title
+                <input type="checkbox" id="needTitleFilter"/>
+
+                <label> Input emitent title
+                    <input type="text" id="emitentTitle"/>
+                </label>
+
+            </label>
+        </div>
+        <div>
+            <button onclick="getDataForTable()">Get Table</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>List Products</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <table id="productTable"
+                       class="table table-bordered
+                     table-condensed table-striped">
+                    <thead>
+                    <tr>
+                        <th>secid</th>
+                        <th>regnumber</th>
+                        <th>emitent_title</th>
+                        <th>tradedate</th>
+                        <th>numtrades</th>
+                        <th>open</th>
+                        <th>close</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Add products to <table>
+    function addToTable(history) {
+        // First check if a <tbody> tag exists, add one if not
+        if ($("#productTable tbody").length == 0) {
+            $("#productTable").append("<tbody></tbody>");
+        }
+        $("#productTable tbody").append(
+            "<tr>" +
+            `<td>${history.secid}</td>` +
+            `<td>${history.regnumber}</td>` +
+            `<td>${history.emitent_title}</td>` +
+            `<td>${history.tradedate}</td>` +
+            `<td>${history.open}</td>` +
+            `<td>${history.close}</td>` +
+            "</tr>"
+        );
+    }
+
+    function getDataForTable() {
+        $("#productTable tbody").html("");
+
+        
+        const TRADE_DATE = "TRADEDATE";
+        const EMITENT_TITLE = "SECID.emitent_title";
+        const EMPTY_STRING = '';
+        let urlAttributes = "?";
+
+        if ($('#needSort').is(":checked")) {
+            const atrValue = $("#attributeName").val();
+            if (atrValue === "Trade date") {
+                urlAttributes += `sortAttribute=${TRADE_DATE}`
+            } else if (atrValue === "Emitent title") {
+                urlAttributes += `sortAttribute=${EMITENT_TITLE}`
+            } else {
+                alert("Incorrent Sort attribute");
+                return;
+            }
+
+            const sortDirection = $("#sortDirection").val();
+            if (sortDirection === "ASC" || sortDirection === "DESC") {
+                urlAttributes += `&sortDirection=${sortDirection}`
+            } else {
+                alert("Incorrect Sort direction");
+                return;
+            }
+        }
+
+
+        if ($('#needDateFilter').is(":checked")) {
+            let startDate = $("#startDate").val();
+            let endDate = $("#endDate").val();
+            if (startDate === EMPTY_STRING || endDate === EMPTY_STRING) {
+                alert("Incorrent dates");
+            } else {
+                urlAttributes += `&startDate=${startDate}&endDate=${endDate}`;
+            }
+        }
+        if ($('#needTitleFilter').is(":checked")){
+            let title = $("#emitentTitle").val();
+            urlAttributes+=`&emitentTitle=${title}`
+        }
+        alert(urlAttributes);
+        $.get("http://localhost:8080/histories/table" + urlAttributes, function (data, status) {
+            for (let history of data) {
+                addToTable(history);
+            }
+        });
+}
+</script>
+</body>
+</html>
